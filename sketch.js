@@ -1,7 +1,7 @@
 const d = 5;
 let lines = [];
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(800, 300);
 
   for (let i = 0; i < 20; i++) {
     lines.push(new LandscapeLine(100, d + i * 5, d));

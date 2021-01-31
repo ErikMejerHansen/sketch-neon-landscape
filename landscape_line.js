@@ -11,7 +11,7 @@ class LandscapeLine {
 
     // Choose a random color for the line. Using HSB values is nice because it allows us to easily
     // change the brightness and saturation values independently of the hue.
-    this.h = round(random(255));
+    this.hue = round(random(255));
 
     // We add a bit of extra lengths to both ends of the line
     // This prevents the lines from becoming to narrow at high z values
@@ -33,6 +33,7 @@ class LandscapeLine {
    * Private
    * Generate the 2D projection for this line give d
    * @param {number} d - distance from viewer to projection
+   * Uses single point perspective as described here: https://math.stackexchange.com/a/2306853
    */
   project() {
     return this.points.map((point) =>
@@ -47,6 +48,7 @@ class LandscapeLine {
     fill(0);
     let projected = this.project();
 
+    // Inlining function here to keep it private
     let strokePath = (path, weight, alpha) => {
       beginShape();
       for (let i = 0; i < path.length; i++) {
@@ -55,15 +57,15 @@ class LandscapeLine {
       }
       endShape();
 
-      let strokeColor = `hsba(${this.h}, ${round(
+      let strokeColor = `hsba(${this.hue}, ${round(
         100 - this.z
       )}%, ${100}%, ${alpha})`;
       strokeWeight(weight);
       stroke(strokeColor);
     };
 
-    // strokePath(projected, 15, 0.01);
-    strokePath(projected, 15, 0.1);
+    // Simple neon effect by stroking the path twice
+    strokePath(projected, 15, 0.08);
     strokePath(projected, 2, 1);
   }
 
